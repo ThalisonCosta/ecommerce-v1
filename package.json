@@ -1,0 +1,8 @@
+{
+  "name": "rest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ThalisonCosta/rest.git",
+  "author": "thalisonCosta <thalisoncosta123@gmail.com>",
+  "license": "MIT"
+}
