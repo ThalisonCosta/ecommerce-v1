@@ -10,9 +10,13 @@ const allOrders = async (req, res) => {
     orders: orders.map(order => {
       return {
         orderId: order.orderId,
-        productId: order.productId,
         quantity: order.quantity,
-        url: 'http://localhost:8080/orders/' + order.productId
+        product: {
+          productId: order.productId,
+          name: order.productName,
+          price: order.price
+        },
+        url: 'http://localhost:8080/orders/' + order.orderId
       };
     })
   };
