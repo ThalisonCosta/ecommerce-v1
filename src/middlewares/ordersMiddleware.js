@@ -5,16 +5,11 @@ const validateProductId = async (req, res, next) => {
   const query = 'SELECT * FROM products WHERE productId = ?';
   const [products] = await connection.execute(query, [productId]);
   if (products.length === 0) {
-    return res.status(404).send({ message: 'Produto não encotrado' });
+    return res.status(404).send({ message: 'Product not found' });
   }
   next();
 };
 
-const validateOrderId = async () => {
-  return {};
-};
-
 module.exports = {
   validateProductId,
-  validateOrderId
 };

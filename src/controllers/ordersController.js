@@ -24,7 +24,7 @@ const oneOrder = async (req, res) => {
   const orderSelected = await ordersModel.getOneOrder(id);
 
   if (await orderSelected.length === 0) {
-    return res.status(404).send({ message: 'order not exists' });
+    return res.status(404).send({ message: 'order not found' });
   }
   const response = {
     id: orderSelected[0].orderId,
@@ -54,8 +54,8 @@ const createOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
   const { id } = req.params;
   const deletedOrder = await ordersModel.deleteOrder(id);
-  if (deletedOrder.length === 0) {
-    return res.status(404).send({ message: 'Cant delete because order not exists' });
+  if (deletedOrder.affectedRows === 0) {
+    return res.status(404).send({ message: 'order not found' });
   }
   return res.status(202).send({ message: 'Order deleted succesfully!' });
 };
