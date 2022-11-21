@@ -8,7 +8,6 @@ const getAll = async () => {
 const createProduct = async (product) => {
   const { productName, price } = product;
   const query = 'INSERT INTO products (productName, price) VALUES(?,?)';
-  console.log(productName);
   const [createdProduct] = await connection.execute(query, [productName, price]);
   return { id: createdProduct.insertId };
 };
@@ -27,7 +26,7 @@ const editProduct = async (id, product) => {
 };
 
 const deleteProduct = async (id) => {
-  const query = 'DELeTE FROM products WHERE productId = ?';
+  const query = 'DELETE FROM products WHERE productId = ?';
   const productDeleted = await connection.execute(query, [id]);
   return productDeleted;
 };
