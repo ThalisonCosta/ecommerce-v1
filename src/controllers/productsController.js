@@ -1,28 +1,41 @@
-const allProducts = (req, res) => {
-  return res.status(200).send({ message: 'tá ok' });
+const productsModel = require('../models/productsModel');
+
+const allProducts = async (req, res) => {
+  const products = await productsModel.getAll();
+  if (await products.length === 0) {
+    return res.status(204).send();
+  }
+  return res.status(200).send(products);
 };
 
-const oneProduct = (req, res) => {
+const oneProduct = async (req, res) => {
   const { id } = req.params;
-  return res.status(200).send({
-    message: 'unique product',
-    id: id
-  });
+  const product = await productsModel.getOneProduct(id);
+  if (await product.length === 0) {
+    return res.status(200).send({ message: 'product not exists' });
+  }
+  return res.status(200).send(product);
 };
 
-const createProduct = (req, res) => {
-  const body = req.body;
-  return res.status(201).send({ message: 'created', product: body });
+const createProduct = async (req, res) => {
+  const createdProduct = await productsModel.createProduct(req.body);
+  return res.status(201).send(createdProduct);
 };
 
-const editProduct = (req, res) => {
+const editProduct = async (req, res) => {
   const { id } = req.params;
-  return res.status(202).send({ message: `the ${id} was edited` });
+  const { body } = req;
+  await productsModel.editProduct(id, body);
+  return res.status(202).send(body);
 };
 
-const deleteProduct = (req, res) => {
+const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  return res.status(204).send({ message: `the ${id} was deleted` });
+  const product = await productsModel.deleteProduct(id);
+  if (product.length === 0) {
+    return res.status(200).send({ message: 'Cant delete because product not exists' });
+  }
+  return res.status(204).send();
 };
 
 module.exports = {
