@@ -8,7 +8,11 @@ const registrate = async (user, hash) => {
 
 };
 
-const login = async () => { return {}; };
+const login = async (email) => {
+  const query = 'SELECT * FROM users WHERE userEmail = ?';
+  const [userLogin] = await connection.execute(query, [email]);
+  return userLogin;
+};
 
 module.exports = {
   registrate,
