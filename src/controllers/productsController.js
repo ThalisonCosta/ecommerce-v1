@@ -39,8 +39,7 @@ const oneProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  console.log(req.file.path);
-  const productCreated = await productsModel.createProduct(req.body, req.file.path);
+  const productCreated = await productsModel.createProduct(req.body, req.file.filename);
   const response = {
     message: 'Product created succesfully!',
     newProduct: {
@@ -48,7 +47,7 @@ const createProduct = async (req, res) => {
       name: req.body.productName,
       price: req.body.price,
       url: 'http://localhost:8080/products/',
-      image: req.file.path
+      image: `uploads/${req.file.filename}`
     }
   };
   return res.status(201).send(response);
@@ -75,7 +74,8 @@ const editProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  const productDeleted = await productsModel.deleteProduct(id);
+  const [productDeleted] = await productsModel.deleteProduct(id);
+
   if (productDeleted.affectedRows === 0) {
     return res.status(404).send({ message: 'product not exists' });
   }
