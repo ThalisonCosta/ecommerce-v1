@@ -9,7 +9,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(morgan('dev'));
-
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
@@ -25,6 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/uploads', express.static('src/assets'));
 app.use('/products', productRouter);
 app.use('/orders', ordersRouter);
 

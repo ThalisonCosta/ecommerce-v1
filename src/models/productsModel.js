@@ -5,10 +5,10 @@ const getAll = async () => {
   return products;
 };
 
-const createProduct = async (product) => {
+const createProduct = async (product, filePath) => {
   const { productName, price } = product;
-  const query = 'INSERT INTO products (productName, price) VALUES(?,?)';
-  const [createdProduct] = await connection.execute(query, [productName, price]);
+  const query = 'INSERT INTO products (productName, price, productImage) VALUES(?,?,?)';
+  const [createdProduct] = await connection.execute(query, [productName, price, filePath]);
   return { id: createdProduct.insertId };
 };
 
