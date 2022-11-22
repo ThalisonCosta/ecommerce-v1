@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const productRouter = require('./routes/productsRoute');
 const ordersRouter = require('./routes/ordersRoute');
+const usersRouter = require('./routes/usersRoute');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 app.use('/uploads', express.static('src/assets'));
 app.use('/products', productRouter);
 app.use('/orders', ordersRouter);
+app.use('/users', usersRouter);
 
 app.use((req, res, next) => {
   const error = new Error('not found');

@@ -3,7 +3,7 @@ const ordersModel = require('../models/ordersModel');
 const allOrders = async (req, res) => {
   const orders = await ordersModel.allOrders();
   if (await orders.length === 0) {
-    return res.status(204).send();
+    return res.status(200).send({ message: 'no orders registreted' });
   }
   const response = {
     total: orders.length,

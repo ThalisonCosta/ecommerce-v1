@@ -3,7 +3,7 @@ const productsModel = require('../models/productsModel');
 const allProducts = async (req, res) => {
   const products = await productsModel.getAll();
   if (await products.length === 0) {
-    return res.status(204).send();
+    return res.status(200).send({ message: 'no products registreted' });
   }
   const response = {
     total: products.length,
