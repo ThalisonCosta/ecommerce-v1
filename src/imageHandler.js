@@ -12,7 +12,6 @@ const storage = multer.diskStorage({
 
 });
 
-
 function filterFile(req, file, callback) {
   const ext = path.extname(file.originalname);
   if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
@@ -20,8 +19,6 @@ function filterFile(req, file, callback) {
   }
   callback(null, true);
 }
-
-
 
 const upload = multer({
   storage: storage,
@@ -31,6 +28,4 @@ const upload = multer({
   fileFilter: filterFile
 });
 
-
 module.exports = upload;
-

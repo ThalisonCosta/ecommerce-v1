@@ -61,7 +61,7 @@ const editProduct = async (req, res) => {
     return res.status(404).send({ message: 'productId not found' });
   }
   const response = {
-    message: 'Product created succesfully!',
+    message: 'Product updated succesfully!',
     newProduct: {
       id: id,
       name: req.body.productName,
@@ -75,7 +75,6 @@ const editProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
   const [productDeleted] = await productsModel.deleteProduct(id);
-
   if (productDeleted.affectedRows === 0) {
     return res.status(404).send({ message: 'product not exists' });
   }
