@@ -22,7 +22,7 @@ const registrate = async (req, res) => {
 
 const userLogin = async (req, res) => {
   const [newLogin] = await usersModel.login(req.body.userEmail);
-  bcrypt.compare(req.body.userPass, newLogin.userPass, (err, result) => {
+  bcrypt.compare(req.body.userPassword, newLogin.userPass, (err, result) => {
     if (result) {
       const token = jwt.sign({
         id: newLogin.userId,
@@ -34,17 +34,6 @@ const userLogin = async (req, res) => {
       });
     } else return res.status(401).send({ message: 'Authentication failed!' });
   });
-
-
-  // const response = {
-  //   message: 'User created succesfully!',
-  //   user: {
-  //     id: newLogin.insertId,
-  //     email: req.body.userEmail
-  //   }
-  // };
-  // return res.status(200).send(newLogin);
-  // });
 };
 
 
