@@ -12,4 +12,17 @@ const inUse = async (req, res, next) => {
   }
 };
 
-module.exports = inUse;
+const validateProductId = async (req, res, next) => {
+  const { id } = req.params;
+  const query = 'SELECT * FROM products WHERE productId = ?';
+  const [products] = await connection.execute(query, [id]);
+  if (products.length === 0) {
+    return res.status(404).send({ message: 'ProductId not found' });
+  }
+  next();
+};
+
+module.exports = {
+  inUse,
+  validateProductId
+};
