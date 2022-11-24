@@ -1,4 +1,5 @@
 const productsModel = require('../models/productsModel');
+require('dotenv').config();
 
 const allProducts = async (req, res) => {
   const products = await productsModel.getAll();
@@ -13,7 +14,7 @@ const allProducts = async (req, res) => {
         name: prod.productName,
         price: prod.price,
         url: 'http://localhost:8080/products/' + prod.productId,
-        image: prod.productImage
+        image: process.env.BASE_URL + prod.productImage
       };
     })
   };
@@ -32,7 +33,7 @@ const oneProduct = async (req, res) => {
     name: product[0].productName,
     price: product[0].price,
     url: 'http://localhost:8080/products/',
-    image: product[0].productImage
+    image: process.env.BASE_URL + product[0].productImage
   };
 
   return res.status(200).send(response);
@@ -47,7 +48,7 @@ const createProduct = async (req, res) => {
       name: req.body.productName,
       price: req.body.price,
       url: 'http://localhost:8080/products/',
-      image: `uploads/${req.file.filename}`
+      image: `${process.env.BASE_URL}uploads/${req.file.filename}`
     }
   };
   return res.status(201).send(response);
