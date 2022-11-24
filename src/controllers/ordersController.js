@@ -14,9 +14,9 @@ const allOrders = async (req, res) => {
         product: {
           productId: order.productId,
           name: order.productName,
-          price: order.price
+          price: order.price,
+          url: process.env.BASE_URL + 'products/' + order.productId
         },
-        url: 'http://localhost:8080/orders/' + order.orderId
       };
     })
   };
@@ -32,9 +32,11 @@ const oneOrder = async (req, res) => {
   }
   const response = {
     id: orderSelected[0].orderId,
-    productId: orderSelected[0].productId,
     quantity: orderSelected[0].quantity,
-    url: 'http://localhost:8080/orders/'
+    product: {
+      productId: orderSelected[0].productId,
+      url: process.env.BASE_URL + 'products/' + orderSelected[0].productId
+    }
   };
 
   return res.status(200).send(response);

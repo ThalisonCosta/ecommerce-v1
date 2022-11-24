@@ -14,7 +14,7 @@ const allProducts = async (req, res) => {
         name: prod.productName,
         price: prod.price,
         description: prod.productDescription,
-        url: process.env.BASE_URL + prod.productId,
+        url: process.env.BASE_URL + 'products/' + prod.productId,
         image: process.env.BASE_URL + prod.productImage
       };
     })
@@ -34,7 +34,7 @@ const oneProduct = async (req, res) => {
     name: product[0].productName,
     price: product[0].price,
     description: product[0].productDescription,
-    url: process.env.BASE_URL,
+    url: process.env.BASE_URL + product[0].productId,
     image: process.env.BASE_URL + product[0].productImage
   };
 
