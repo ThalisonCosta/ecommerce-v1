@@ -6,10 +6,10 @@ const getAll = async () => {
 };
 
 const createProduct = async (product, fileName) => {
-  const { productName, price } = product;
+  const { productName, price, productDescription } = product;
   const productImage = `uploads/${fileName}`;
-  const query = 'INSERT INTO products (productName, price, productImage) VALUES(?,?,?)';
-  const [createdProduct] = await connection.execute(query, [productName, price, productImage]);
+  const query = 'INSERT INTO products (productName, price, productDescription, productImage) VALUES(?,?,?,?)';
+  const [createdProduct] = await connection.execute(query, [productName, price, productDescription, productImage]);
   return { id: createdProduct.insertId };
 };
 
@@ -20,10 +20,22 @@ const getOneProduct = async (id) => {
 };
 
 const editProduct = async (id, product) => {
-  const { productName, price } = product;
-  const query = 'UPDATE products SET productName = ?, price = ? WHERE productId = ?';
-  const [productEdited] = await connection.execute(query, [productName, price, id]);
-  return productEdited;
+  const { productName, price, productDescription } = product;
+  if (productName) {
+    const query = 'UPDATE products SET productName = ? WHERE productId = ?';
+    const [newName] = await connection.execute(query, [productName, id]);
+    return newName;
+  }
+  if (price) {
+    const query = 'UPDATE products SET price = ? WHERE productId = ?';
+    const [newPrice] = await connection.execute(query, [price, id]);
+    return newPrice;
+  }
+  if (productDescription) {
+    const query = 'UPDATE products SET productDescription = ? WHERE productId = ?';
+    const [newDescription] = await connection.execute(query, [productDescription, id]);
+    return newDescription;
+  }
 };
 
 const deleteProduct = async (id) => {

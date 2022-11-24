@@ -13,7 +13,8 @@ const allProducts = async (req, res) => {
         id: prod.productId,
         name: prod.productName,
         price: prod.price,
-        url: 'http://localhost:8080/products/' + prod.productId,
+        description: prod.productDescription,
+        url: process.env.BASE_URL + prod.productId,
         image: process.env.BASE_URL + prod.productImage
       };
     })
@@ -32,7 +33,8 @@ const oneProduct = async (req, res) => {
     id: product[0].productId,
     name: product[0].productName,
     price: product[0].price,
-    url: 'http://localhost:8080/products/',
+    description: product[0].productDescription,
+    url: process.env.BASE_URL,
     image: process.env.BASE_URL + product[0].productImage
   };
 
@@ -47,7 +49,8 @@ const createProduct = async (req, res) => {
       id: productCreated.id,
       name: req.body.productName,
       price: req.body.price,
-      url: 'http://localhost:8080/products/',
+      description: req.body.productDescription,
+      url: process.env.BASE_URL + 'products/',
       image: `${process.env.BASE_URL}uploads/${req.file.filename}`
     }
   };
@@ -58,16 +61,21 @@ const editProduct = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
   const productEdited = await productsModel.editProduct(id, body);
+  if (!productEdited) {
+    return res.status(404).send({ message: 'no body was passed' });
+  }
   if (productEdited.affectedRows === 0) {
     return res.status(404).send({ message: 'productId not found' });
   }
+
   const response = {
     message: 'Product updated succesfully!',
     newProduct: {
       id: id,
-      name: req.body.productName,
-      price: req.body.price,
-      url: 'http://localhost:8080/products/' + id,
+      name: body.productName,
+      price: body.price,
+      description: body.productDescription,
+      url: process.env.BASE_URL + 'products/' + id,
     }
   };
   return res.status(202).send(response);
