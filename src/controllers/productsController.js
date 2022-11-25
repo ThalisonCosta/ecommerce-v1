@@ -11,6 +11,7 @@ const allProducts = async (req, res) => {
     products: products.map(prod => {
       return {
         id: prod.productId,
+        category: prod.categoryId,
         name: prod.productName,
         price: prod.price,
         description: prod.productDescription,
@@ -31,6 +32,7 @@ const oneProduct = async (req, res) => {
   }
   const response = {
     id: product[0].productId,
+    category: product[0].categoryId,
     name: product[0].productName,
     price: product[0].price,
     description: product[0].productDescription,
@@ -49,6 +51,7 @@ const createProduct = async (req, res) => {
       id: productCreated.id,
       name: req.body.productName,
       price: req.body.price,
+      categoryId: req.body.categoryId,
       description: req.body.productDescription,
       url: process.env.BASE_URL + 'products/',
       image: `${process.env.BASE_URL}uploads/${req.file.filename}`
@@ -72,6 +75,7 @@ const editProduct = async (req, res) => {
     message: 'Product updated succesfully!',
     newProduct: {
       id: id,
+      category: body.categoryId,
       name: body.productName,
       price: body.price,
       description: body.productDescription,
