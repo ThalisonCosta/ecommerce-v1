@@ -51,7 +51,7 @@ const createOrder = async (req, res) => {
       id: orderCreated.id,
       productId: req.body.productId,
       quantity: req.body.quantity,
-      url: 'http://localhost:8080/orders/'
+      url: process.env.BASE_URL + 'orders/'
     }
   };
   return res.status(201).send(response);
