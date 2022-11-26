@@ -8,7 +8,20 @@ const allCategories = async (req, res) => {
 const productsByCategory = async (req, res) => {
   const products = await categoryModel.productsByCategory(req.params.id);
   if (products.length < 1) { return res.status(200).send({ message: 'no products in this category' }); }
-  return res.status(200).send(products);
+  const response = {
+    total: products.length,
+    products: products.map(prod => {
+      return {
+        id: prod.productId,
+        name: prod.productName,
+        price: prod.productPrice,
+        description: prod.productDescription,
+        url: `${process.env.BASE_URL}products/${prod.productId}`,
+        image: process.env.BASE_URL + prod.productImage
+      };
+    })
+  };
+  return res.status(200).send(response);
 };
 
 module.exports = {
