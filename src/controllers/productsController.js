@@ -51,7 +51,7 @@ const createProduct = async (req, res) => {
       id: productCreated.id,
       name: req.body.productName,
       price: req.body.price,
-      categoryId: req.body.categoryId,
+      categoryId: parseFloat(req.body.categoryId),
       description: req.body.productDescription,
       url: process.env.BASE_URL + 'products/',
       image: `${process.env.BASE_URL}uploads/${req.file.filename}`
