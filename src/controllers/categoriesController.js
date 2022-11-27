@@ -14,7 +14,7 @@ const productsByCategory = async (req, res) => {
       return {
         id: prod.productId,
         name: prod.productName,
-        price: prod.productPrice,
+        price: prod.price,
         description: prod.productDescription,
         url: `${process.env.BASE_URL}products/${prod.productId}`,
         image: process.env.BASE_URL + prod.productImage
