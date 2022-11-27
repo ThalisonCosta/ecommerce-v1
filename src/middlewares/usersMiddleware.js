@@ -21,7 +21,7 @@ const notExists = async (req, res, next) => {
 const emailFormat = (req, res, next) => {
   const email = req.body.userEmail;
   if (email === '' || email === undefined || !email.includes('@') || !email.includes('.') || email.length < 5) {
-    return res.status(412).send({ message: 'invalid email' });
+    return res.status(400).send({ message: 'invalid email' });
   } else next();
 
 };
@@ -29,14 +29,14 @@ const emailFormat = (req, res, next) => {
 const userNameFormat = (req, res, next) => {
   const name = req.body.userName;
   if (name === '' || name === undefined || name.length < 3) {
-    return res.status(412).send({ message: 'invalid userName' });
+    return res.status(400).send({ message: 'invalid userName' });
   } else next();
 };
 
 const userPasswordFormat = (req, res, next) => {
   const pass = req.body.userPassword;
   if (pass.length < 8 || pass === '' || pass === undefined) {
-    return res.status(412).send({ message: 'invalid password' });
+    return res.status(400).send({ message: 'invalid password' });
   } else next();
 };
 
