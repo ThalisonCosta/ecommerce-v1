@@ -6,7 +6,9 @@
   "author": "thalisonCosta <thalisoncosta123@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "server-start": "sudo yarn global add pm2 && pm2 start src/server.js --name=ecommerce",
+    "server-stop": "pm2 stop ecommerce"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -16,7 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "eslint": "^8.27.0",
