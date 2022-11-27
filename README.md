@@ -20,3 +20,5 @@ Any trouble related to run Docker it can be searched in <a href="https://hub.doc
   1.  ```yarn dev```  if you want to receive logs from every request in the API
   2.  ```yarn server-start``` if you want to start and leave the server running uninterrupted
   3.  If you want to stop the server only run ```yarn server-stop```
+
+Now the server will be accessible on the url ```http://localhost:8080/```
