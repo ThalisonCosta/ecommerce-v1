@@ -1,11 +1,5 @@
 const connection = require('./connection');
 
-const allOrders = async () => {
-  const query = 'SELECT orders.orderId, orders.quantity, products.productId, products.productName, products.price FROM orders INNER JOIN products ON products.productId = orders.productId';
-  const [orders] = await connection.execute(query);
-  return orders;
-};
-
 const createOrder = async (order, userEmail) => {
   const { productId, quantity } = order;
   const query = 'INSERT INTO orders (productId, quantity, userEmail) VALUES (?,?,?)';
@@ -32,7 +26,6 @@ const userOrder = async (email) => {
 };
 
 module.exports = {
-  allOrders,
   createOrder,
   getOneOrder,
   deleteOrder,

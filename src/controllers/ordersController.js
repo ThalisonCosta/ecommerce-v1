@@ -1,29 +1,6 @@
 const ordersModel = require('../models/ordersModel');
 const jwt = require('jsonwebtoken');
 
-const allOrders = async (req, res) => {
-  const orders = await ordersModel.allOrders();
-  if (await orders.length === 0) {
-    return res.status(200).send({ message: 'no orders registreted' });
-  }
-  const response = {
-    total: orders.length,
-    orders: orders.map(order => {
-      return {
-        orderId: order.orderId,
-        quantity: order.quantity,
-        product: {
-          productId: order.productId,
-          name: order.productName,
-          price: order.price,
-          url: process.env.BASE_URL + 'products/' + order.productId
-        },
-      };
-    })
-  };
-  return res.status(200).send(response);
-};
-
 const oneOrder = async (req, res) => {
   const { id } = req.params;
   const orderSelected = await ordersModel.getOneOrder(id);
@@ -78,7 +55,7 @@ const userOrder = async (req, res) => {
   const { userEmail } = jwt.decode(refreshToken);
   const userOrders = await ordersModel.userOrder(userEmail);
   if (userOrders.length < 1) {
-    return res.status(404).send({ message: 'user has no order to list' });
+    return res.status(200).send({ message: 'user has no order to list' });
   }
   const response = {
     total: userOrders.length,
@@ -100,7 +77,6 @@ const userOrder = async (req, res) => {
 };
 
 module.exports = {
-  allOrders,
   oneOrder,
   createOrder,
   deleteOrder,
