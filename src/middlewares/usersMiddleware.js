@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const connection = require('../models/connection');
 
 const duplicate = async (req, res, next) => {
@@ -40,11 +41,23 @@ const userPasswordFormat = (req, res, next) => {
   } else next();
 };
 
+const verifyRefreshToken = (req, res, next) => {
+  const { refreshToken } = req.body;
+  if (refreshToken === null) return res.status(401).send({ message: 'Authentication failed!' });
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, good) => {
+    if (err) return res.status(401).send({ message: 'Authentication failed' });
+    console.log(good);
+    next();
+  });
+};
+
 
 module.exports = {
   duplicate,
   notExists,
   emailFormat,
   userNameFormat,
-  userPasswordFormat
+  userPasswordFormat,
+  verifyRefreshToken
 };

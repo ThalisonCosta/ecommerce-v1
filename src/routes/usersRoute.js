@@ -15,4 +15,6 @@ router.post('/login',
   usersMiddlewares.notExists,
   usersController.userLogin);
 
+router.post('/refresh', usersMiddlewares.verifyRefreshToken, usersController.refreshToken);
+
 module.exports = router;
