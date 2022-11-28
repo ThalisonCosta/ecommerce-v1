@@ -1,4 +1,5 @@
 const ordersModel = require('../models/ordersModel');
+const jwt = require('jsonwebtoken');
 
 const allOrders = async (req, res) => {
   const orders = await ordersModel.allOrders();
@@ -35,6 +36,8 @@ const oneOrder = async (req, res) => {
     quantity: orderSelected[0].quantity,
     product: {
       productId: orderSelected[0].productId,
+      name: orderSelected[0].productName,
+      price: orderSelected[0].price,
       url: process.env.BASE_URL + 'products/' + orderSelected[0].productId
     }
   };
@@ -44,7 +47,10 @@ const oneOrder = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const orderCreated = await ordersModel.createOrder(req.body);
+  const token = req.headers.authorization.split(' ')[1];
+  const { refreshToken } = jwt.decode(token);
+  const { userEmail } = jwt.decode(refreshToken);
+  const orderCreated = await ordersModel.createOrder(req.body, userEmail);
   const response = {
     message: 'Order insert succesfully!',
     newOrder: {
@@ -66,9 +72,37 @@ const deleteOrder = async (req, res) => {
   return res.status(202).send({ message: 'Order deleted succesfully!' });
 };
 
+const userOrder = async (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+  const { refreshToken } = jwt.decode(token);
+  const { userEmail } = jwt.decode(refreshToken);
+  const userOrders = await ordersModel.userOrder(userEmail);
+  if (userOrders.length < 1) {
+    return res.status(404).send({ message: 'user has no order to list' });
+  }
+  const response = {
+    total: userOrders.length,
+    orders: userOrders.map(order => {
+      return {
+        orderId: order.orderId,
+        quantity: order.quantity,
+        product: {
+          productId: order.productId,
+          name: order.productName,
+          price: order.price,
+          url: process.env.BASE_URL + 'products/' + order.productId
+        },
+      };
+    })
+  };
+
+  res.status(200).send(response);
+};
+
 module.exports = {
   allOrders,
   oneOrder,
   createOrder,
-  deleteOrder
+  deleteOrder,
+  userOrder
 };
