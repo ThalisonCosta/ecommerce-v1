@@ -23,9 +23,10 @@ const registrate = async (req, res) => {
 const userLogin = async (req, res) => {
   const { userEmail, userPassword } = req.body;
   const [newLogin] = await usersModel.login(userEmail);
-  bcrypt.compare(userPassword, newLogin.userPass, (err, result) => {
+  const password = newLogin.userPass;
+  bcrypt.compare(userPassword, password, (_err, result) => {
     if (result) {
-      const refreshToken = jwt.sign({ userEmail, userPassword }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '90d' });
+      const refreshToken = jwt.sign({ userEmail, password }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '90d' });
       const token = jwt.sign({ refreshToken }, process.env.JWT_KEY, { expiresIn: '1800s' });
       return res.status(200).send({
         message: 'Authentication success!',
