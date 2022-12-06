@@ -9,11 +9,10 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS users (
-        userId INT NOT NULL AUTO_INCREMENT,
+        userId VARCHAR(255) NOT NULL,
         userName VARCHAR(255) NOT NULL,
         userEmail VARCHAR(255) NOT NULL,
-        userPass VARCHAR(255) NOT NULL,
-        PRIMARY KEY (userId, userEmail)
+        userPass VARCHAR(255) NOT NULL
     );
 
 CREATE TABLE
@@ -32,6 +31,6 @@ CREATE TABLE
         orderId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         quantity INT NOT NULL,
         productId INT NOT NULL,
-        userEmail VARCHAR(255) NOT NULL,
+        userId VARCHAR(255) NOT NULL,
         FOREIGN KEY (productId) REFERENCES products (productId)
     );
