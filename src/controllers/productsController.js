@@ -74,7 +74,7 @@ const editProduct = async (req, res) => {
   const response = {
     message: 'Product updated succesfully!',
     newProduct: {
-      id: id,
+      id: parseInt(id),
       category: body.categoryId,
       name: body.productName,
       price: body.price,
