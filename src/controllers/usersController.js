@@ -8,12 +8,9 @@ const registrate = async (req, res) => {
     if (errBcrypt) {
       return res.status(500).send({ error: errBcrypt });
     }
-    const newUser = await usersModel.registrate(req.body, hash);
+    await usersModel.registrate(req.body, hash);
     const response = {
       message: 'User created succesfully!',
-      user: {
-        id: newUser.insertId,
-      }
     };
     return res.status(201).send(response);
   });
