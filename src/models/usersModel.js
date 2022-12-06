@@ -1,9 +1,11 @@
+const { randomUUID } = require('crypto');
 const connection = require('./connection');
 
 const registrate = async (user, hash) => {
   const { userName, userEmail } = user;
-  const query = 'INSERT INTO users (userName, userEmail, userPass) VALUES (?,?,?)';
-  const [userCreated] = await connection.execute(query, [userName, userEmail, hash]);
+  const uid = randomUUID().toString();
+  const query = 'INSERT INTO users (userId, userName, userEmail, userPass) VALUES (?,?,?,?)';
+  const [userCreated] = await connection.execute(query, [uid, userName, userEmail, hash]);
   return userCreated;
 
 };

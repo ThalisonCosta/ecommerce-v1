@@ -13,7 +13,6 @@ const registrate = async (req, res) => {
       message: 'User created succesfully!',
       user: {
         id: newUser.insertId,
-        email: req.body.userEmail
       }
     };
     return res.status(201).send(response);
@@ -23,10 +22,10 @@ const registrate = async (req, res) => {
 const userLogin = async (req, res) => {
   const { userEmail, userPassword } = req.body;
   const [newLogin] = await usersModel.login(userEmail);
-  const password = newLogin.userPass;
-  bcrypt.compare(userPassword, password, (_err, result) => {
+  const { userId, userPass } = newLogin;
+  bcrypt.compare(userPassword, userPass, (_err, result) => {
     if (result) {
-      const refreshToken = jwt.sign({ userEmail, password }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '90d' });
+      const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '90d' });
       const token = jwt.sign({ refreshToken }, process.env.JWT_KEY, { expiresIn: '1800s' });
       return res.status(200).send({
         message: 'Authentication success!',
