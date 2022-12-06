@@ -1,5 +1,5 @@
 const connection = require('../models/connection');
-const jwt = require('jsonwebtoken');
+const checkUserId = require('../utils/commom');
 
 const validateOrderId = async (req, res, next) => {
   const { id } = req.params;
@@ -22,14 +22,12 @@ const validateProductId = async (req, res, next) => {
 
 const allowed = async (req, res, next) => {
   const { id } = req.params;
-  const querySearchEmail = 'SELECT userEmail FROM orders WHERE orderId = ?';
+  const querySearchEmail = 'SELECT userId FROM orders WHERE orderId = ?';
   const [DBEmail] = await connection.execute(querySearchEmail, [id]);
 
-  const token = req.headers.authorization.split(' ')[1];
-  const { refreshToken } = jwt.decode(token);
-  const { userEmail } = jwt.decode(refreshToken);
+  const userId = checkUserId(req.headers.authorization.split(' ')[1]);
 
-  if (DBEmail[0].userEmail !== userEmail) {
+  if (DBEmail[0].userId !== userId) {
     return res.status(401).send({ message: 'not allowed' });
   } else next();
 };
