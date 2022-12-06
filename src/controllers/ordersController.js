@@ -1,9 +1,10 @@
 const ordersModel = require('../models/ordersModel');
-const jwt = require('jsonwebtoken');
+const checkUserId = require('../utils/commom');
 
 const oneOrder = async (req, res) => {
   const { id } = req.params;
-  const orderSelected = await ordersModel.getOneOrder(id);
+  const userId = checkUserId(req.headers.authorization.split(' ')[1]);
+  const orderSelected = await ordersModel.getOneOrder(id, userId);
 
   if (await orderSelected.length === 0) {
     return res.status(404).send({ message: 'order not found' });
@@ -24,10 +25,8 @@ const oneOrder = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const { refreshToken } = jwt.decode(token);
-  const { userEmail } = jwt.decode(refreshToken);
-  const orderCreated = await ordersModel.createOrder(req.body, userEmail);
+  const userId = checkUserId(req.headers.authorization.split(' ')[1]);
+  const orderCreated = await ordersModel.createOrder(req.body, userId);
   const response = {
     message: 'Order insert succesfully!',
     newOrder: {
@@ -42,7 +41,8 @@ const createOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   const { id } = req.params;
-  const deletedOrder = await ordersModel.deleteOrder(id);
+  const userId = checkUserId(req.headers.authorization.split(' ')[1]);
+  const deletedOrder = await ordersModel.deleteOrder(id, userId);
   if (deletedOrder.affectedRows === 0) {
     return res.status(404).send({ message: 'order not found' });
   }
@@ -50,10 +50,8 @@ const deleteOrder = async (req, res) => {
 };
 
 const userOrder = async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const { refreshToken } = jwt.decode(token);
-  const { userEmail } = jwt.decode(refreshToken);
-  const userOrders = await ordersModel.userOrder(userEmail);
+  const userId = checkUserId(req.headers.authorization.split(' ')[1]);
+  const userOrders = await ordersModel.userOrder(userId);
   if (userOrders.length < 1) {
     return res.status(200).send({ message: 'user has no order to list' });
   }
