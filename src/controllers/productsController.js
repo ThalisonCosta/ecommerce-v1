@@ -63,24 +63,20 @@ const createProduct = async (req, res) => {
 const editProduct = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
-  const productEdited = await productsModel.editProduct(id, body);
-  if (!productEdited) {
-    return res.status(404).send({ message: 'no body was passed' });
-  }
-  if (productEdited.affectedRows === 0) {
-    return res.status(404).send({ message: 'productId not found' });
+
+  if (!Object.keys(body).length) {
+    return res.status(404).send({ message: 'invalid body' });
   }
 
+  await productsModel.editProduct(id, body);
   const response = {
     message: 'Product updated succesfully!',
-    newProduct: {
-      id: parseInt(id),
+    changes: {
       category: body.categoryId,
       name: body.productName,
       price: body.price,
       description: body.productDescription,
-      url: process.env.BASE_URL + 'products/' + id,
-    }
+    },
   };
   return res.status(202).send(response);
 };

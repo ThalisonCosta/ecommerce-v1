@@ -21,27 +21,16 @@ const getOneProduct = async (id) => {
 };
 
 const editProduct = async (id, product) => {
-  const { productName, price, productDescription, categoryId } = product;
-  if (productName) {
-    const query = 'UPDATE products SET productName = ? WHERE productId = ?';
-    const [newName] = await connection.execute(query, [productName, id]);
-    return newName;
-  }
-  if (price) {
-    const query = 'UPDATE products SET price = ? WHERE productId = ?';
-    const [newPrice] = await connection.execute(query, [price, id]);
-    return newPrice;
-  }
-  if (productDescription) {
-    const query = 'UPDATE products SET productDescription = ? WHERE productId = ?';
-    const [newDescription] = await connection.execute(query, [productDescription, id]);
-    return newDescription;
-  }
-  if (categoryId) {
-    const query = 'UPDATE products SET categoryId = ? WHERE productId =?';
-    const [newCategory] = await connection.execute(query, [categoryId, id]);
-    return newCategory;
-  }
+
+  Object.keys(product).forEach(async (key) => {
+
+    for (let index = 0; index < key.length; index++) {
+      let params = product[key];
+      let query = `UPDATE products SET ${key} = ? WHERE productId = ?`;
+      let [newProduct] = await connection.execute(query, [params, id]);
+      return newProduct;
+    }
+  });
 };
 
 const deleteProduct = async (id) => {
