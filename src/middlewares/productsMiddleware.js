@@ -21,7 +21,20 @@ const validateProductId = async (req, res, next) => {
   next();
 };
 
+const validateBody = async(req, res, next) =>{
+  const {body} = req;
+  const validBody = Object.keys(body).some(key => key === 'productName' || key === 'price' || key === 'productDescription' || key === 'productImage' || key === 'categoryId');
+
+  if(validBody === false) {
+    return res.status(404).send({message: 'invalid body!'});
+  }
+
+  next();
+};
+
+
 module.exports = {
   inUse,
+  validateBody,
   validateProductId
 };
