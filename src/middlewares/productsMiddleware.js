@@ -7,7 +7,6 @@ const inUse = async (req, res, next) => {
   if (orders.length > 0) {
     return res.status(409).send({ message: 'Product selected is in use' });
   } else {
-    console.log(orders);
     next();
   }
 };
