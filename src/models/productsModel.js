@@ -21,9 +21,7 @@ const getOneProduct = async (id) => {
 };
 
 const editProduct = async (id, product) => {
-
   Object.keys(product).forEach(async (key) => {
-
     for (let index = 0; index < key.length; index++) {
       let params = product[key];
       let query = `UPDATE products SET ${key} = ? WHERE productId = ?`;
