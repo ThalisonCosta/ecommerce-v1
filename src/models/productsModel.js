@@ -8,9 +8,8 @@ const getAll = async () => {
 
 const createProduct = async (product, fileName) => {
   const { productName, price, productDescription, categoryId } = product;
-  const productImage = `uploads/${fileName}`;
   const query = 'INSERT INTO products (productName, price, productDescription, productImage, categoryId) VALUES(?,?,?,?,?)';
-  const [createdProduct] = await connection.execute(query, [productName, price, productDescription, productImage, categoryId]);
+  const [createdProduct] = await connection.execute(query, [productName, price, productDescription, fileName, categoryId]);
   return { id: createdProduct.insertId };
 };
 
@@ -20,7 +19,16 @@ const getOneProduct = async (id) => {
   return productSelected;
 };
 
-const editProduct = async (id, product) => {
+const editProduct = async (id, product, file) => {
+  if (file !== undefined) {
+    const [deleteImage] = await connection.execute(`SELECT productImage FROM products WHERE productId = ${[id]}`);
+    unlink(`src/assets/${deleteImage[0].productImage}`, (err) => {
+      if (err) throw err;
+    });
+    const query = 'UPDATE products SET productImage = ? WHERE productId = ?';
+    const [newFile] = await connection.execute(query, [file.filename, id]);
+    return newFile;
+  }
   Object.keys(product).forEach(async (key) => {
     for (let index = 0; index < key.length; index++) {
       let params = product[key];
@@ -33,8 +41,7 @@ const editProduct = async (id, product) => {
 
 const deleteProduct = async (id) => {
   const [deleteImage] = await connection.execute(`SELECT productImage FROM products WHERE productId = ${[id]}`);
-  const imageName = JSON.stringify(deleteImage).split('/')[1].split('"')[0];
-  unlink(`src/assets/${imageName}`, (err) => {
+  unlink(`src/assets/${deleteImage[0].productImage}`, (err) => {
     if (err) throw err;
   });
 

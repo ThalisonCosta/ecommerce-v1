@@ -16,7 +16,7 @@ const allProducts = async (req, res) => {
         price: prod.price,
         description: prod.productDescription,
         url: process.env.BASE_URL + 'products/' + prod.productId,
-        image: process.env.BASE_URL + prod.productImage
+        image: `${process.env.BASE_URL}uploads/${prod.productImage}`
       };
     })
   };
@@ -37,7 +37,7 @@ const oneProduct = async (req, res) => {
     price: product[0].price,
     description: product[0].productDescription,
     url: process.env.BASE_URL + product[0].productId,
-    image: process.env.BASE_URL + product[0].productImage
+    image: `${process.env.BASE_URL}uploads/${product[0].productImage}`
   };
 
   return res.status(200).send(response);
@@ -53,7 +53,7 @@ const createProduct = async (req, res) => {
       price: req.body.price,
       categoryId: parseInt(req.body.categoryId),
       description: req.body.productDescription,
-      url: process.env.BASE_URL + 'products/',
+      url: process.env.BASE_URL + 'products/' + productCreated.id,
       image: `${process.env.BASE_URL}uploads/${req.file.filename}`
     }
   };
@@ -64,18 +64,15 @@ const editProduct = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
 
-  if (!Object.keys(body).length) {
-    return res.status(404).send({ message: 'invalid body' });
-  }
-
-  await productsModel.editProduct(id, body);
+  await productsModel.editProduct(id, body, req.file);
   const response = {
     message: 'Product updated succesfully!',
     changes: {
-      category: body.categoryId,
-      name: body.productName,
-      price: body.price,
-      description: body.productDescription,
+      category: body.categoryId !== undefined ? parseInt(body.categoryId) : undefined,
+      name: body.productName !== undefined ? body.productName : undefined,
+      price: body.price !== undefined ? parseInt(body.price): undefined,
+      description: body.productDescription !== undefined ? body.productDescription : undefined,
+      image: req.file !== undefined ? `${process.env.BASE_URL}uploads/${req.file.filename}` : undefined
     },
   };
   return res.status(202).send(response);
