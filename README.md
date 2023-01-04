@@ -1,7 +1,7 @@
 # ecommerce
 
 ## Overview
-This is a simple node API made with Express that simulates an ecommerce flow. The application is running in AWS, as well the Database created with MySQL. All documentation about routes and how the API works can be found <a href="https://documenter.getpostman.com/view/22927688/2s8YsuwCLn#ec209ec1-d9e9-4ea6-8297-991b64e53e20" target="_blank">here</a>
+This is a simple node API made with Express that simulates an ecommerce flow.
 
 ## Running the project
 To run this project in your local machine follow the steps below
